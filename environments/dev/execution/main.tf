@@ -4,19 +4,27 @@ provider "google" {
 }
 
 module "allow_port" {
-    source = "../../../modules/networking"
+    source = "../../../modules/networking/gcp/firewall_rule"
     rule_name = "allow-9000-sonarqube-${var.environment}"
     allow_protocol = "tcp"
     allow_ports = ["9000"]
     target_tags = ["sonarqube"]
 }
 
+module "sonarqube_static_public_ip" {
+    source = "../../../modules/networking/gcp/static_ip"
+    ip_name = "test-sonarqube-${var.environment}-ip"
+}
+
 module "sonarqube_vm"  {
     source = "../../../modules/vm" 
     machine_name = "test-sonarqube-${var.environment}"
     machine_type = "e2-medium"
+    static_ip = module.sonarqube_static_public_ip.static_public_ip
     metadata_startup_script = "${file("../../../scripts/install.docker.sh")}"
     tags = ["sonarqube", var.environment]
+
+    depends_on = [ module.sonarqube_static_public_ip ]
 }
 
 module "sonarqube_docker_container" {

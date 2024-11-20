@@ -25,6 +25,12 @@ variable "boot_disk_size" {
     default = 50 #GB
 }
 
+variable "static_ip" {
+    description = "Optional static public IP. If provided, it will be used; otherwise, a dynamic IP will be assigned."
+    type = string
+    default = null
+}
+
 # --------------------------------------------------
 
 variable "machine_name" {

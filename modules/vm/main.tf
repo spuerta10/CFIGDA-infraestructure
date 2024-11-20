@@ -5,7 +5,10 @@ resource "google_compute_instance" "vm" {
 
     network_interface {
         network = var.network
-        access_config {} # Asign public IP to VM
+        access_config {
+            # Use the static IP if provided
+            nat_ip = var.static_ip != null ? var.static_ip : null
+        } # Asign public IP to VM
     }
 
     boot_disk {
