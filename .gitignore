@@ -1,0 +1,12 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+override.tf
+override.tf.json
+terraform.tfvars.json
+crash.log
+*.tfplan
+
+# Terraform provider lock
+.terraform.lock.hcl
